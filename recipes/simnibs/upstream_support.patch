@@ -1,41 +1,81 @@
-diff --git a/setup.py b/setup.py
-index f7c3af75..2cc212c0 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -41,7 +41,7 @@ cgal_mesh_macros = [
- is_conda = 'CONDA_PREFIX' in os.environ
- # No conda, no setup
- if not is_conda:
--    raise Exception("Cannot run setup without conda")
+@@ -12,6 +12,8 @@
+ import numpy as np
+ 
+ 
++is_conda = 'CONDA_PREFIX' in os.environ
++
+ ''' C extensions
+ 
+ CGAL Compilation
+@@ -92,12 +94,11 @@
+         os.path.join(tbb_path, 'tbb', 'lib', 'libtbb.dylib'),
+         os.path.join(tbb_path, 'tbb', 'lib', 'libtbbmalloc.dylib'),
+     ]
+-else:
+-    raise OSError('OS not supported!')
++if not is_conda:
 +    print("Warning: Conda not detected. Attempting to use system paths.")
  
+ 
  #### Setup compilation arguments
+-is_conda = 'CONDA_PREFIX' in os.environ
  
-@@ -74,12 +74,22 @@ if sys.platform == 'win32':
+ if sys.platform == 'win32':
+     petsc_libs = ['libpetsc', 'msmpi']
+@@ -147,18 +148,25 @@
+     petsc_extra_link_args = None
  
- elif sys.platform == 'linux':
-     # CGAL
--    cgal_dirs = [os.path.join(os.environ['CONDA_PREFIX'], 'lib')]
-+    if is_conda:
-+        cgal_dirs = [os.path.join(os.environ['CONDA_PREFIX'], 'lib')]
-+        cgal_include = [
-+            np.get_include(),
-+            os.path.join(os.environ['CONDA_PREFIX'], 'include','eigen3'),
-+        ]
-+    else:
-+        # System fallback (Debian/Ubuntu)
-+        cgal_dirs = ['/usr/lib', '/usr/lib/x86_64-linux-gnu', '/usr/lib/aarch64-linux-gnu']
-+        cgal_include = [
-+            np.get_include(),
-+            '/usr/include', 
-+            '/usr/include/eigen3',
-+        ]
-+
      cgal_libs = ['mpfr', 'gmp', 'z', 'tbb', 'tbbmalloc', 'pthread']
 -    cgal_include = [
 -        np.get_include(),
--        os.path.join(os.environ['CONDA_PREFIX'], 'include','eigen3'),
+-        CGAL_headers,
+-        eigen_headers,
+-        tbb_headers,
+-        'simnibs/external/include/linux/mpfr',
+-        'simnibs/external/include/linux/gmp'
 -    ]
-     cgal_runtime = None
+-    # To find the boost headers if installed with conda
++    
+     if is_conda:
+-        cgal_include += [os.path.join(os.environ['CONDA_PREFIX'], 'include')]
+-    cgal_dirs = ['simnibs/external/lib/linux']
++        cgal_include = [
++            np.get_include(),
++            os.path.join(os.environ['CONDA_PREFIX'], 'include'),
++            os.path.join(os.environ['CONDA_PREFIX'], 'include', 'eigen3'),
++        ]
++        cgal_dirs = [os.path.join(os.environ['CONDA_PREFIX'], 'lib'), 'simnibs/external/lib/linux']
++    else:
++        cgal_include = [
++            np.get_include(),
++            CGAL_headers,
++            eigen_headers,
++            tbb_headers,
++            'simnibs/external/include/linux/mpfr',
++            'simnibs/external/include/linux/gmp'
++        ]
++        cgal_dirs = ['simnibs/external/lib/linux']
++
+     cgal_runtime = ['$ORIGIN/../../external/lib/linux']
      # Add -Os -flto for much smaller binaries
      cgal_compile_args = [
+@@ -379,13 +387,15 @@
+             )
+         )
+         if self.force or changed_meshing:
+-            download_and_extract(CGAL_url)
++            if not is_conda:
++                download_and_extract(CGAL_url)
+             if self.inplace:
+                 build_lib = ""
+             else:
+                 build_lib = self.build_lib + "/"
+ 
+-            install_lib(tbb_url, tbb_path, tbb_libs, build_lib)
++            if not is_conda:
++                install_lib(tbb_url, tbb_path, tbb_libs, build_lib)
+ 
+         # Compile
+         build_ext.run(self)
