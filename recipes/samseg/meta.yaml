@@ -36,7 +36,7 @@ requirements:
 about:
   home: https://github.com/freesurfer/samseg
   license: Freesurfer
-  # license_file: LICENSE.txt # Not found in root of repo in my list_dir check?
+  license_file: LICENSE.txt
   summary: Sequence Adaptive Multimodal SEGmentation
 
 extra:
