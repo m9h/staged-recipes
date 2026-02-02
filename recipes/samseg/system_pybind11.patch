@@ -1,0 +1,20 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -19,10 +19,6 @@
+ #               external dependencies
+ # --------------------------------------------------
+-set(pybind11_DIR $ENV{pybind11_DIR})
+-if(NOT pybind11_DIR)
+-  set(pydbind11_DIR "pybind11")
+-endif()
+ 
+ # -------- itk --------
+ find_package(ITK HINTS ${ITK_DIR} REQUIRED)
+@@ -38,6 +34,6 @@
+ # --------------------------------------------------
+ 
+ # initialize pybind for python wrapping
+-add_subdirectory(${pybind11_DIR} pybind11)
+-message(STATUS "ITK_DIR=${ITK_DIR} pybind11_DIR=${pybind11_DIR}")
++find_package(pybind11 CONFIG REQUIRED)
++message(STATUS "ITK_DIR=${ITK_DIR} Found system pybind11")

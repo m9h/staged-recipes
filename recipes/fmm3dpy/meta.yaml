@@ -1,0 +1,43 @@
+{% set name = "fmm3dpy" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/flatironinstitute/FMM3D/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: bd22cd53348bbb2e014bfb4a1b0b75757b9d212e276d13b6c828e35f95310153
+
+build:
+  number: 0
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
+    - cmake >=3.19
+    - make
+  host:
+    - python
+    - pip
+    - scikit-build-core >=0.4.3
+    - numpy >=1.12.0,<2.0dev0
+  run:
+    - python
+    - numpy >=1.12.0,<2.0dev0
+
+test:
+  imports:
+    - fmm3dpy
+
+about:
+  home: https://github.com/flatironinstitute/FMM3D
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: Python bindings for the FMM3D library
+
+extra:
+  recipe-maintainers:
+    - simnibs-bot

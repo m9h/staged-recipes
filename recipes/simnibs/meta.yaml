@@ -1,0 +1,65 @@
+{% set name = "simnibs" %}
+{% set version = "4.1.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/simnibs/simnibs/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 7de88b8bd6d2ec0bab74ba78fc42f65843888e9fad2dc520abe72e928037c393
+  patches:
+    - upstream_support.patch
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake
+    - make
+  host:
+    - python
+    - pip
+    - setuptools
+    - setuptools-scm
+    - wheel
+    - cython
+    - numpy >=1.26,<2.0dev0
+    - cgal-cpp 5.5.*
+    - boost-cpp
+    - tbb-devel
+    - mpfr
+    - gmp
+  run:
+    - python
+    - numpy >=1.26,<2.0dev0
+    - scipy >=1.14
+    - nibabel >=5.3
+    - h5py
+    - requests
+    - pillow
+    - jupyterlab
+    - fmm3dpy
+    - pygpc
+    - samseg
+    - python-mumps
+    - petsc4py
+
+test:
+  imports:
+    - simnibs
+  commands:
+    - msh2nii --help
+
+about:
+  home: https://simnibs.org
+  license: GPL-3.0
+  license_file: LICENSE.txt
+  summary: Simulation of Non-Invasive Brain Stimulation
+
+extra:
+  recipe-maintainers:
+    - simnibs-bot

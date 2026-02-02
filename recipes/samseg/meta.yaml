@@ -1,0 +1,44 @@
+{% set name = "samseg" %}
+{% set version = "1.0.0" %}
+{% set commit = "ccb17cbcdad707fbbf65e5e934fc89b95cc8529a" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/freesurfer/samseg/archive/{{ commit }}.tar.gz
+  sha256: 04bf6ca184fcdc7855c4e1ce1ac695f957d757721161ad7df01c944a2b82a998
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake
+    - make
+  host:
+    - python
+    - pip
+    - setuptools >=67
+    - versioneer
+    - pybind11
+    - libitk-devel        # [linux]
+    - itk                 # [not linux]
+    - zlib
+  run:
+    - python
+    - numpy 
+    - scipy
+
+about:
+  home: https://github.com/freesurfer/samseg
+  license: Freesurfer
+  # license_file: LICENSE.txt # Not found in root of repo in my list_dir check?
+  summary: Sequence Adaptive Multimodal SEGmentation
+
+extra:
+  recipe-maintainers:
+    - simnibs-bot
