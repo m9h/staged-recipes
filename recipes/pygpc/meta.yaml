@@ -9,6 +9,8 @@ package:
 source:
   url: https://github.com/pygpc-polynomial-chaos/pygpc/archive/{{ commit }}.tar.gz
   sha256: 2d03311925999a1d47e6f96eca1607e2af3f7f8d2b9191fc35ec99641e3e7e1c
+  patches:
+    - fix_numpy_const.patch
 
 build:
   number: 0

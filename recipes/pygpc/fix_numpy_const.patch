@@ -1,0 +1,50 @@
+diff --git a/pckg/pygpc_extensions/src/pygpc_extensions.cpp b/pckg/pygpc_extensions/src/pygpc_extensions.cpp
+index 32d2e1c..8b4172f 100644
+--- a/pckg/pygpc_extensions/src/pygpc_extensions.cpp
++++ b/pckg/pygpc_extensions/src/pygpc_extensions.cpp
+@@ -30,17 +30,17 @@ static PyObject* create_gpc_matrix_cpu(PyObject* self, PyObject* args)
+     result = PyArray_FROM_OTF(py_result, NPY_DOUBLE,
+         NPY_ARRAY_OUT_ARRAY);
+ 
+-    npy_intp* ptr_dim_arguments = PyArray_DIMS((const PyArrayObject*)arguments);
++    npy_intp* ptr_dim_arguments = PyArray_DIMS((PyArrayObject*)arguments);
+     npy_intp n_arguments = ptr_dim_arguments[0];
+     npy_intp n_dim = ptr_dim_arguments[1];
+-    double* ptr_arguments = (double*)PyArray_DATA((const PyArrayObject*)arguments);
++    double* ptr_arguments = (double*)PyArray_DATA((PyArrayObject*)arguments);
+ 
+-    npy_intp* ptr_dim_result = PyArray_DIMS((const PyArrayObject*)result);
++    npy_intp* ptr_dim_result = PyArray_DIMS((PyArrayObject*)result);
+     npy_intp n_basis = ptr_dim_result[1];
+     npy_intp n_grad = ptr_dim_result[2];
+-    double* ptr_result = (double*)PyArray_DATA((const PyArrayObject*)result);
++    double* ptr_result = (double*)PyArray_DATA((PyArrayObject*)result);
+ 
+-    double* ptr_coeffs = (double*)PyArray_DATA((const PyArrayObject*)coeffs);
++    double* ptr_coeffs = (double*)PyArray_DATA((PyArrayObject*)coeffs);
+ 
+     create_gpc_matrix_cpu_t<double, npy_intp>(ptr_arguments,
+         ptr_coeffs, ptr_result, n_arguments, n_dim, n_basis, n_grad);
+@@ -73,17 +73,17 @@ static PyObject* create_gpc_matrix_omp(PyObject* self, PyObject* args)
+     result = PyArray_FROM_OTF(py_result, NPY_DOUBLE,
+         NPY_ARRAY_OUT_ARRAY);
+ 
+-    npy_intp* ptr_dim_arguments = PyArray_DIMS((const PyArrayObject*)arguments);
++    npy_intp* ptr_dim_arguments = PyArray_DIMS((PyArrayObject*)arguments);
+     npy_intp n_arguments = ptr_dim_arguments[0];
+     npy_intp n_dim = ptr_dim_arguments[1];
+-    double* ptr_arguments = (double*)PyArray_DATA((const PyArrayObject*)arguments);
++    double* ptr_arguments = (double*)PyArray_DATA((PyArrayObject*)arguments);
+ 
+-    npy_intp* ptr_dim_result = PyArray_DIMS((const PyArrayObject*)result);
++    npy_intp* ptr_dim_result = PyArray_DIMS((PyArrayObject*)result);
+     npy_intp n_basis = ptr_dim_result[1];
+     npy_intp n_grad = ptr_dim_result[2];
+-    double* ptr_result = (double*)PyArray_DATA((const PyArrayObject*)result);
++    double* ptr_result = (double*)PyArray_DATA((PyArrayObject*)result);
+ 
+-    double* ptr_coeffs = (double*)PyArray_DATA((const PyArrayObject*)coeffs);
++    double* ptr_coeffs = (double*)PyArray_DATA((PyArrayObject*)coeffs);
+ 
+     create_gpc_matrix_omp_t<double, npy_intp>(ptr_arguments,
+         ptr_coeffs, ptr_result, n_arguments, n_dim, n_basis, n_grad);
